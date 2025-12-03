@@ -1,0 +1,50 @@
+/******************************************************************************
+
+Welcome to GDB Online.
+  GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
+  C#, OCaml, VB, Perl, Swift, Prolog, Javascript, Pascal, COBOL, HTML, CSS, JS
+  Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(void)
+{
+	int i;
+	int n[15], dmaior;
+	float porc;
+	dmaior=0;
+	porc=0;
+	
+	
+	srand(time(NULL));
+
+    // Gera números aleatórios
+    for (i = 0; i < 15; i++) {
+        n[i] = rand() % 30;
+    }
+    
+    printf("\n idades : ");
+    for(i=0; i < 15; i++)
+    {
+        printf("%d  ", n[i]);
+    }
+    
+    for (i = 0; i < 15; i++) 
+{
+    if (n[i]>18)
+    {
+    	dmaior++;
+	}
+}
+ porc = (dmaior/ 15.0) * 100;
+
+	
+	printf("\n A qusntidade de +18 eh : %d", dmaior);
+	printf("\n O percentual de +18 eh : %.2f%%", porc);
+
+
+   return 0;
+}

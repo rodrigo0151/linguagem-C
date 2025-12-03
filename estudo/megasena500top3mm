@@ -1,0 +1,126 @@
+/******************************************************************************
+
+Welcome to GDB Online.
+  GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
+  C#, OCaml, VB, Perl, Swift, Prolog, Javascript, Pascal, COBOL, HTML, CSS, JS
+  Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(void) 
+{
+    int i, j, k;
+    int sorteio[10];
+    int cartelas[500][10];
+    int total[500] = {0};
+
+    srand(time(NULL));
+
+    // Gera números do sorteio
+    for (i = 0; i < 10; i++) {
+        sorteio[i] = rand() % 20;
+    }
+
+    // Gera números das cartelas
+    for (k = 0; k < 500; k++) {
+        for (i = 0; i < 10; i++) {
+            cartelas[k][i] = rand() % 20;
+        }
+    }
+
+    // Mostra sorteio
+    printf("\nSorteio: ");
+    for (i = 0; i < 10; i++) {
+        printf("%d ", sorteio[i]);
+    }
+
+    // Mostra todas as cartelas
+    for (k = 0; k < 500; k++) {
+        printf("\nCartela %d: ", k + 1);
+        for (i = 0; i < 10; i++) {
+            printf("%d ", cartelas[k][i]);
+        }
+    }
+
+    // Verifica acertos
+    for (k = 0; k < 500; k++) {
+        for (i = 0; i < 10; i++) {
+            for (j = 0; j < 10; j++) {
+                if (sorteio[i] == cartelas[k][j]) {
+                    total[k]++;
+                    printf("\nNúmero %d sorteado (pos %d) está na cartela %d (pos %d)",
+                           sorteio[i], i, k + 1, j);
+                    break; //impede de contar duas vezes o msm numero
+                }
+            }
+        }
+    }
+
+    // --------------------------
+    //  ENCONTRAR MAIORES E MENORES
+    // --------------------------
+
+    int top3_idx[3] = {0, 0, 0};
+    int low3_idx[3] = {0, 0, 0};
+
+    // inicializa com valores da primeira cartela
+    for (i = 0; i < 3; i++) {
+        top3_idx[i] = i;
+        low3_idx[i] = i;
+    }
+
+    // percorre todas as cartelas para decidir as 3 melhores e 3 piores
+    for (k = 0; k < 500; k++) {
+
+        // verifica top 3 maiores
+        if (total[k] > total[top3_idx[0]]) {
+            top3_idx[2] = top3_idx[1];
+            top3_idx[1] = top3_idx[0];
+            top3_idx[0] = k;
+        }
+        else if (total[k] > total[top3_idx[1]]) {
+            top3_idx[2] = top3_idx[1];
+            top3_idx[1] = k;
+        }
+        else if (total[k] > total[top3_idx[2]]) {
+            top3_idx[2] = k;
+        }
+
+        // verifica top 3 menores
+        if (total[k] < total[low3_idx[0]]) {
+            low3_idx[2] = low3_idx[1];
+            low3_idx[1] = low3_idx[0];
+            low3_idx[0] = k;
+        }
+        else if (total[k] < total[low3_idx[1]]) {
+            low3_idx[2] = low3_idx[1];
+            low3_idx[1] = k;
+        }
+        else if (total[k] < total[low3_idx[2]]) {
+            low3_idx[2] = k;
+        }
+    }
+
+    // --------------------------------
+    // MOSTRAR RESULTADO FINAL
+    // --------------------------------
+
+    printf("\n\n TOP 3 CARTELAS COM MAIS ACERTOS -");
+    for (i = 0; i < 3; i++) {
+        k = top3_idx[i];
+        printf("\nCartela %d (acertos: %d): ", k + 1, total[k]);
+        for (j = 0; j < 10; j++) printf("%d ", cartelas[k][j]);
+    }
+
+    printf("\n\n TOP 3 CARTELAS COM MENOS ACERTOS -");
+    for (i = 0; i < 3; i++) {
+        k = low3_idx[i];
+        printf("\nCartela %d (acertos: %d): ", k + 1, total[k]);
+        for (j = 0; j < 10; j++) printf("%d ", cartelas[k][j]);
+    }
+
+    return 0;
+}
